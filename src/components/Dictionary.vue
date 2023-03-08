@@ -1,16 +1,18 @@
 <template>
   <div class="font-[inter]">
-    <div class="fixed w-full z-10 bg-white">
+    <div
+      class="fixed w-full z-10 bg-white dark:bg-[#050505] transition-all duration-500 ease-in-out"
+    >
       <div class="container">
         <header class="py-6 flex justify-between items-center">
           <img src="../assets/images/logo.svg" />
           <div class="flex items-center">
             <div
-              v-on:click="theme"
-              class="bg-[#757575] w-[40px] h-[20px] rounded-[10px] px-[3px] flex items-center cursor-pointer"
+              @click="toggleDark()"
+              class="bg-[#757575] dark:bg-[#A445ED] w-[40px] h-[20px] rounded-[10px] px-[3px] flex items-center cursor-pointer"
             >
               <div
-                v-if="light"
+                v-if="!isDark"
                 class="w-[14px] h-[14px] rounded-full bg-white my-[3px]"
               ></div>
               <div
@@ -18,7 +20,10 @@
                 class="w-[14px] h-[14px] rounded-full bg-white my-[3px] ml-auto"
               ></div>
             </div>
-            <img class="ml-4" src="../assets/images/icon-moon.svg" />
+            <img
+              class="ml-4 dark:stroke-[#A445ED]"
+              src="../assets/images/icon-moon.svg"
+            />
           </div>
         </header>
         <form
@@ -40,7 +45,7 @@
     <div class="container flex justify-between items-center pt-[10rem]">
       <div>
         <h1
-          class="text-[32px] md:text-[64px] md:leading-[60px] font-bold text-[#2D2D2D]"
+          class="text-[32px] md:text-[64px] md:leading-[60px] font-bold text-[#2D2D2D] dark:text-white"
         >
           Keyboard
         </h1>
@@ -58,7 +63,7 @@
     <div class="container py-6">
       <div class="flex justify-between items-center pb-5 md:pb-10">
         <h2
-          class="italic font-bold leading-[22px] text-[18px] md:text-[24px] mr-4"
+          class="italic font-bold leading-[22px] text-[18px] md:text-[24px] mr-4 dark:text-white"
         >
           noun
         </h2>
@@ -70,7 +75,7 @@
         >
           Meaning
         </h1>
-        <ul class="py-4 text-[15px] md:text-[18px] list-inside">
+        <ul class="py-4 text-[15px] md:text-[18px] list-inside dark:text-white">
           <li>
             (etc.) A set of keys used to operate a typewriter, computer etc.
           </li>
@@ -98,7 +103,7 @@
       </div>
       <div class="flex justify-between items-center py-8 md:py-10">
         <h2
-          class="italic font-bold leading-[22px] text-[18px] md:text-[24px] mr-4"
+          class="italic font-bold leading-[22px] text-[18px] md:text-[24px] mr-4 dark:text-white"
         >
           verb
         </h2>
@@ -111,7 +116,7 @@
           Meaning
         </h1>
         <ul class="py-4 text-[15px] list-inside md:text-[18px]">
-          <li>To type on a computer keyboard.</li>
+          <li class="dark:text-white">To type on a computer keyboard.</li>
           <li class="text-[#757575] list-none ml-[1.3rem]">
             “Keyboarding is the part of this job I hate the most.”
           </li>
@@ -124,7 +129,7 @@
           </h1>
           <div class="flex items-center">
             <p
-              class="font-normal mr-3 text-[14px] text-[#2D2D2D] leading-[17px] decoration-dotted cursor-pointer"
+              class="font-normal mr-3 text-[14px] text-[#2D2D2D] leading-[17px] decoration-dotted cursor-pointer dark:text-white"
             >
               https://en.wiktionary.org/wiki/keyboard
             </p>
@@ -136,20 +141,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      light: true,
-    };
-  },
+<script setup>
+import { useDark, useToggle } from "@vueuse/core";
 
-  methods: {
-    theme() {
-      this.light = !this.light;
-    },
-  },
-};
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
+
+console.log(isDark.value);
 </script>
 
 <style scoped>
