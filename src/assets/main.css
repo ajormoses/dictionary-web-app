@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: inconsolata;
+  src: url("./fonts/inconsolata/static/Inconsolata-Regular.ttf");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: inconsolata;
+  src: url("./fonts/inconsolata/static/Inconsolata-Bold.ttf");
+  font-style: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: inter;
+  src: url("./fonts/inter/static/Inter-Bold.ttf");
+  font-style: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: inter;
+  src: url("./fonts/inter/static/Inter-Regular.ttf");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: lora;
+  src: url("./fonts/lora/static/Lora-Bold.ttf");
+  font-style: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: inter;
+  src: url("./fonts/lora/static/Lora-Regular.ttf");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: inter;
+  src: url("./fonts/lora/static/Lora-BoldItalic.ttf");
+  font-style: italic;
+  font-weight: bold;
+}
+
+@layer base {
+  /* CONFIG STYLE */
+  /* font-baloo */
+  body {
+    @apply font-normal text-[#213547] bg-white  transition-all duration-500 ease-in-out m-0 p-0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  *,
+  *::before,
+  *::after {
+    @apply m-0 p-0 box-border;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-4 h-4;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-[100vh] bg-black border-solid border-4 border-gray-200;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+}
+
+@layer components {
+  /* CONFIG STYLE */
+  .container {
+    @apply w-[90%] md:w-4/5 lg:w-[90%] 2xl:w-[1500px] m-auto max-w-[90%] overflow-hidden;
+  }
+}
