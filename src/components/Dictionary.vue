@@ -3,27 +3,30 @@
     <div
       class="fixed w-full z-10 bg-white dark:bg-[#050505] transition-all duration-500 ease-in-out"
     >
-      <div class="container">
+      <div class="container pb-8">
         <header class="py-6 flex justify-between items-center">
           <img src="../assets/images/logo.svg" />
           <div class="flex items-center">
-            <div
-              @click="toggleDark()"
-              class="bg-[#757575] dark:bg-[#A445ED] w-[40px] h-[20px] rounded-[10px] px-[3px] flex items-center cursor-pointer"
-            >
+            <Dropdown class="mr-[1.2rem]" title="Services" :items="services" />
+            <div class="flex items-center">
               <div
-                v-if="!isDark"
-                class="w-[14px] h-[14px] rounded-full bg-white my-[3px]"
-              ></div>
-              <div
-                v-else
-                class="w-[14px] h-[14px] rounded-full bg-white my-[3px] ml-auto"
-              ></div>
+                @click="toggleDark()"
+                class="bg-[#757575] dark:bg-[#A445ED] w-[40px] h-[20px] rounded-[10px] px-[3px] flex items-center cursor-pointer"
+              >
+                <div
+                  v-if="!isDark"
+                  class="w-[14px] h-[14px] rounded-full bg-white my-[3px]"
+                ></div>
+                <div
+                  v-else
+                  class="w-[14px] h-[14px] rounded-full bg-white my-[3px] ml-auto"
+                ></div>
+              </div>
+              <img
+                class="ml-4 dark:stroke-[#A445ED]"
+                src="../assets/images/icon-moon.svg"
+              />
             </div>
-            <img
-              class="ml-4 dark:stroke-[#A445ED]"
-              src="../assets/images/icon-moon.svg"
-            />
           </div>
         </header>
         <form
@@ -67,7 +70,9 @@
         >
           noun
         </h2>
-        <div class="border border-[#E9E9E9] w-full bg-[#E9E9E9]"></div>
+        <div
+          class="border border-[#E9E9E9] w-full bg-[#E9E9E9] dark:border-[#3A3A3A]"
+        ></div>
       </div>
       <div>
         <h1
@@ -107,7 +112,9 @@
         >
           verb
         </h2>
-        <div class="border border-[#E9E9E9] w-full bg-[#E9E9E9]"></div>
+        <div
+          class="border border-[#E9E9E9] w-full dark:border dark:border-[#3A3A3A]"
+        ></div>
       </div>
       <div>
         <h1
@@ -121,7 +128,9 @@
             “Keyboarding is the part of this job I hate the most.”
           </li>
         </ul>
-        <div class="bord pt-5 md:flex md:items-center">
+        <div
+          class="bord pt-5 md:flex md:items-center dark:border-t dark:border-[#3A3A3A]"
+        >
           <h1
             class="text-[14px] text-[#757575] leading-[17px] font-normal underline md:mr-5"
           >
@@ -143,11 +152,27 @@
 
 <script setup>
 import { useDark, useToggle } from "@vueuse/core";
+import Dropdown from "./Dropdown.vue";
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
 
 console.log(isDark.value);
+
+const services = [
+  {
+    title: "Sans Serif",
+    link: "#",
+  },
+  {
+    title: "Serif",
+    link: "#",
+  },
+  {
+    title: "Mono",
+    link: "#",
+  },
+];
 </script>
 
 <style scoped>
