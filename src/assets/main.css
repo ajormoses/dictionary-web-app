@@ -55,7 +55,7 @@
   /* CONFIG STYLE */
   /* font-baloo */
   body {
-    @apply font-normal text-[#213547] dark:bg-[#050505] bg-white  transition-all duration-500 ease-in-out m-0 p-0;
+    @apply font-normal text-[#213547]  dark:bg-[#050505] bg-white  transition-all duration-500 ease-in-out m-0 p-0;
   }
 
   html {
@@ -85,5 +85,17 @@
   /* CONFIG STYLE */
   .container {
     @apply w-[90%] md:w-4/5 lg:w-[800px] m-auto max-w-[90%] overflow-hidden;
+  }
+
+  .sanserif {
+    @apply font-[inconsolata];
+  }
+
+  .sans {
+    @apply font-[lora];
+  }
+
+  .mono {
+    @apply font-[inter];
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="font-[inter]">
+  <div :class="currentFont">
     <div
       class="fixed w-full z-10 bg-white dark:bg-[#050505] transition-all duration-500 ease-in-out"
     >
@@ -7,7 +7,7 @@
         <header class="py-6 flex justify-between items-center">
           <img src="../assets/images/logo.svg" />
           <div class="flex items-center">
-            <Dropdown class="mr-[1.2rem]" title="Services" :items="services" />
+            <Dropdown @changeFont="font = $event" class="mr-[1.2rem]" />
             <div class="flex items-center">
               <div
                 @click="toggleDark()"
@@ -30,10 +30,11 @@
           </div>
         </header>
         <form
-          @submit.prevent
+          @submit.prevent="search"
           class="flex justify-between items-center bg-[#F4F4F4] rounded-[1rem] py-3 px-6"
         >
           <input
+            v-model="keyword"
             class="bg-[#F4F4F4] w-full outline-none font-extrabold text-base"
             placeholder="Enter Text"
           />
@@ -45,105 +46,93 @@
         </form>
       </div>
     </div>
-    <div class="container flex justify-between items-center pt-[10rem]">
+    <div class="container flex justify-between items-center pt-[10.5rem]">
       <div>
         <h1
           class="text-[32px] md:text-[64px] md:leading-[60px] font-bold text-[#2D2D2D] dark:text-white"
         >
-          Keyboard
+          {{ dico?.word }}
         </h1>
         <p
           class="text-[#A445ED] text-base md:text-[24px] leading-[24px] md:leading-[50px] font-normal"
         >
-          /'Ki:bo:d'/
+          {{ dico?.phonetic }}
         </p>
       </div>
-      <img
-        class="w-[48px] h-[48px] md:w-[75px] md:h-[75px] cursor-pointer"
-        src="../assets/images/icon-play.svg"
-      />
+      <div v-if="dico?.phonetics[0].audio">
+        <img
+          @click="playMusic"
+          class="w-[48px] h-[48px] md:w-[75px] md:h-[75px] cursor-pointer"
+          src="../assets/images/icon-play.svg"
+        />
+        <audio
+          ref="audio"
+          :src="dico?.phonetics[0].audio"
+          type="audio/mpeg"
+        ></audio>
+      </div>
     </div>
     <div class="container py-6">
-      <div class="flex justify-between items-center pb-5 md:pb-10">
-        <h2
-          class="italic font-bold leading-[22px] text-[18px] md:text-[24px] mr-4 dark:text-white"
-        >
-          noun
-        </h2>
-        <div
-          class="border border-[#E9E9E9] w-full bg-[#E9E9E9] dark:border-[#3A3A3A]"
-        ></div>
-      </div>
-      <div>
-        <h1
-          class="text-base md:text-[20px] text-[#757575] leading-[19px] md:leading-[21px] font-normal"
-        >
-          Meaning
-        </h1>
-        <ul class="py-4 text-[15px] md:text-[18px] list-inside dark:text-white">
-          <li>
-            (etc.) A set of keys used to operate a typewriter, computer etc.
-          </li>
-          <li>
-            A component of many instruments including the piano, organ, and
-            harpsichord consisting of usually black and white keys that cause
-            different tones to be produced when struck.
-          </li>
-          <li>
-            A device with keys of a musical keyboard, used to control electronic
-            sound-producing devices which may be built into or separate from the
-            keyboard device.
-          </li>
-        </ul>
-        <div class="flex items-center">
-          <h1
-            class="text-base md:text-[20px] text-[#757575] leading-[19px] md:leading-[21px] font-normal mr-5 md:mr-8"
+      <div v-for="(meaning, index) in dico?.meanings" :key="index" class="mb-5">
+        <div class="flex justify-between items-center pb-5 md:pb-10">
+          <h2
+            class="italic capitalize font-bold leading-[22px] text-[18px] md:text-[24px] mr-4 dark:text-white"
           >
-            Synonyms
+            {{ meaning?.partOfSpeech }}
+          </h2>
+          <div
+            class="border border-[#E9E9E9] w-full bg-[#E9E9E9] dark:border-[#3A3A3A]"
+          ></div>
+        </div>
+        <div>
+          <h1
+            class="text-base md:text-[20px] text-[#757575] leading-[19px] md:leading-[21px] font-normal"
+          >
+            Meaning
           </h1>
-          <p class="text-[#A445ED] md:text-[20px] md:leading-[21px] font-bold">
-            electronic keyboard
-          </p>
+          <ul
+            class="py-2.5 text-[15px] md:text-[18px] list-inside dark:text-white"
+          >
+            <li v-for="(list, index) in meaning?.definitions" :key="index">
+              {{ list?.definition }}
+            </li>
+          </ul>
+          <div class="flex items-center" v-if="meaning.synonyms.length">
+            <h1
+              class="text-base md:text-[20px] text-[#757575] leading-[19px] md:leading-[21px] font-normal mr-5 md:mr-8"
+            >
+              Synonyms
+            </h1>
+            <p
+              v-for="(list, index) in meaning.synonyms"
+              :key="index"
+              class="text-[#A445ED] md:text-[20px] md:leading-[21px] font-bold pr-2"
+            >
+              {{ index > 3 ? "" : list }}
+            </p>
+          </div>
         </div>
       </div>
-      <div class="flex justify-between items-center py-8 md:py-10">
-        <h2
-          class="italic font-bold leading-[22px] text-[18px] md:text-[24px] mr-4 dark:text-white"
-        >
-          verb
-        </h2>
-        <div
-          class="border border-[#E9E9E9] w-full dark:border dark:border-[#3A3A3A]"
-        ></div>
-      </div>
-      <div>
+      <div
+        v-if="dico?.word"
+        class="bord pt-5 md:flex md:items-center dark:border-t dark:border-[#3A3A3A]"
+      >
         <h1
-          class="text-base md:text-[20px] text-[#757575] leading-[19px] md:leading-[25px] font-normal"
+          class="text-[14px] text-[#757575] leading-[17px] font-normal underline md:mr-5"
         >
-          Meaning
+          Source
         </h1>
-        <ul class="py-4 text-[15px] list-inside md:text-[18px]">
-          <li class="dark:text-white">To type on a computer keyboard.</li>
-          <li class="text-[#757575] list-none ml-[1.3rem]">
-            “Keyboarding is the part of this job I hate the most.”
-          </li>
-        </ul>
-        <div
-          class="bord pt-5 md:flex md:items-center dark:border-t dark:border-[#3A3A3A]"
-        >
-          <h1
-            class="text-[14px] text-[#757575] leading-[17px] font-normal underline md:mr-5"
-          >
-            Source
-          </h1>
-          <div class="flex items-center">
+        <div class="flex items-center">
+          <div class="md:flex">
             <p
+              v-for="(url, index) in dico?.sourceUrls"
+              :key="index"
               class="font-normal mr-3 text-[14px] text-[#2D2D2D] leading-[17px] decoration-dotted cursor-pointer dark:text-white"
             >
-              https://en.wiktionary.org/wiki/keyboard
+              {{ url }}
             </p>
-            <img src="../assets/images/icon-new-window.svg" />
           </div>
+          <img src="../assets/images/icon-new-window.svg" />
         </div>
       </div>
     </div>
@@ -151,28 +140,50 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { storeToRefs } from "pinia";
 import { useDark, useToggle } from "@vueuse/core";
 import Dropdown from "./Dropdown.vue";
+import { onMounted, ref } from "vue";
+import { useDictionaryStore } from "../stores/dictionary";
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
 
-console.log(isDark.value);
+const { fetchDictionary } = useDictionaryStore();
+const { dico } = storeToRefs(useDictionaryStore());
 
-const services = [
-  {
-    title: "Sans Serif",
-    link: "#",
-  },
-  {
-    title: "Serif",
-    link: "#",
-  },
-  {
-    title: "Mono",
-    link: "#",
-  },
-];
+const keyword = ref("");
+
+onMounted(() => {
+  fetchDictionary(keyword.value);
+});
+
+const search = () => {
+  fetchDictionary(keyword.value);
+};
+
+const font = ref("Sans Serif");
+
+const fontChange = (font) => {
+  font.value = font;
+};
+
+const fonts = {
+  "Sans Serif": "sanserif",
+  Serif: "sans",
+  Mono: "mono",
+};
+
+const currentFont = computed(() => {
+  return fonts[font.value];
+});
+
+const audio = ref(null);
+
+const playMusic = () => {
+  audio.value.play();
+};
 </script>
 
 <style scoped>

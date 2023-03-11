@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-item relative cursor-pointer" @click="isOpen = !isOpen">
+  <div class="menu-item relative cursor-pointer" @click="handleOpen">
     <div
       class="flex justify-between items-center border-r border-[#E9E9E9] pr-3"
     >
@@ -17,12 +17,25 @@
       appear
     >
       <div class="sub-menu" v-if="isOpen">
-        <div v-for="(item, i) in items" :key="i" class="menu-item">
-          <a
-            class="leading-[24px] text-[14px] hover:text-[#A445ED] font-bold"
-            :href="item.link"
-            >{{ item.title }}</a
+        <div class="menu-item">
+          <p
+            @click="changeFont('Sans Serif')"
+            class="leading-[24px] text-[14px] hover:text-[#A445ED] font-bold font-[inconsolata]"
           >
+            Sans Serif
+          </p>
+          <p
+            @click="changeFont('Serif')"
+            class="leading-[24px] text-[14px] hover:text-[#A445ED] font-bold font-[lora]"
+          >
+            Serif
+          </p>
+          <p
+            @click="changeFont('Mono')"
+            class="leading-[24px] text-[14px] hover:text-[#A445ED] font-bold font-[inter]"
+          >
+            Mono
+          </p>
         </div>
       </div>
     </transition>
@@ -30,13 +43,26 @@
 </template>
 
 <script>
+// import { Ref } from 'vue';
 export default {
   name: "dropdown",
-  props: ["title", "items"],
+
   data() {
     return {
       isOpen: false,
+      title: "San Serif",
     };
+  },
+
+  methods: {
+    handleOpen() {
+      this.isOpen = !this.isOpen;
+    },
+
+    changeFont(font) {
+      this.title = font;
+      this.$emit("changeFont", font);
+    },
   },
 };
 </script>
