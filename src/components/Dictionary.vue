@@ -99,16 +99,17 @@
           </ul>
           <div class="flex items-center" v-if="meaning.synonyms.length">
             <h1
-              class="text-base md:text-[20px] text-[#757575] leading-[19px] md:leading-[21px] font-normal mr-5 md:mr-8"
+              class="text-base md:text-[20px] text-[#757575] leading-[19px] md:leading-[21px] font-normal mr-4 md:mr-8"
             >
               Synonyms
             </h1>
             <p
               v-for="(list, index) in meaning.synonyms"
               :key="index"
-              class="text-[#A445ED] md:text-[20px] md:leading-[21px] font-bold pr-2"
+              @click="searchSynonyms(list)"
+              class="text-[#A445ED] md:text-[20px] md:leading-[21px] font-bold pr-2 text-center"
             >
-              {{ index > 3 ? "" : list }}
+              {{ index > 2 ? "" : list }}
             </p>
           </div>
         </div>
@@ -124,13 +125,14 @@
         </h1>
         <div class="flex items-center">
           <div class="md:flex">
-            <p
+            <a
               v-for="(url, index) in dico?.sourceUrls"
               :key="index"
+              :href="url"
               class="font-normal mr-3 text-[14px] text-[#2D2D2D] leading-[17px] decoration-dotted cursor-pointer dark:text-white"
             >
               {{ url }}
-            </p>
+            </a>
           </div>
           <img src="../assets/images/icon-new-window.svg" />
         </div>
@@ -153,7 +155,7 @@ const toggleDark = useToggle(isDark);
 const { fetchDictionary } = useDictionaryStore();
 const { dico } = storeToRefs(useDictionaryStore());
 
-const keyword = ref("");
+let keyword = ref("");
 
 onMounted(() => {
   fetchDictionary(keyword.value);
@@ -161,6 +163,12 @@ onMounted(() => {
 
 const search = () => {
   fetchDictionary(keyword.value);
+};
+
+const searchSynonyms = (value) => {
+  fetchDictionary(value);
+  keyword = ref(value);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 const font = ref("Sans Serif");
