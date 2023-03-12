@@ -107,7 +107,7 @@
               v-for="(list, index) in meaning.synonyms"
               :key="index"
               @click="searchSynonyms(list)"
-              class="text-[#A445ED] md:text-[20px] md:leading-[21px] font-bold pr-2 text-center"
+              class="text-[#A445ED] md:text-[20px] md:leading-[21px] font-bold pr-2 text-center cursor-pointer"
             >
               {{ index > 2 ? "" : list }}
             </p>
