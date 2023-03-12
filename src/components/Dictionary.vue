@@ -124,7 +124,7 @@
           Source
         </h1>
         <div class="flex items-center">
-          <div class="md:flex">
+          <div class="flex flex-col">
             <a
               v-for="(url, index) in dico?.sourceUrls"
               :key="index"
